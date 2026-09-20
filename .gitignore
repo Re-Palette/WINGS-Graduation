@@ -11,3 +11,9 @@ yarn-error.log*
 .vercel
 next-env.d.ts
 *.tsbuildinfo
+
+# Original photographs. Run `npm run photos` to generate the optimised
+# files in public/images (those ARE committed); the full-size originals
+# are kept out of the repository. Remove this line if you want them
+# versioned here.
+/photos

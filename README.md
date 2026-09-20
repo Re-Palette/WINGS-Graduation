@@ -49,36 +49,76 @@ Node 20+ recommended.
 `src/lib/content.ts`.** No component needs touching to change a word, add
 a member, reorder the memory cloud or repoint an image.
 
+### Importing photographs
+
+Put the originals in a `photos/` folder and run:
+
+```bash
+npm run photos              # reads ./photos, writes ./public/images
+npm run photos -- --dry-run # report what it would do, write nothing
+```
+
+```
+photos/
+  huddle-hero.jpg      the huddle, wide — the whole site opens on it
+  huddle-final.jpg     the huddle, tighter crop            (chapter 06)
+  sky-sunset.jpg       sunset, silhouettes low in frame    (chapter 07)
+  year-01.jpg          1年生 / 初大会
+  year-02.jpg          2年生 / 新体制
+  year-03.jpg          3年生 / 最後の大会
+  memories/*.jpg       the memory cloud, in filename order (chapter 04)
+  members/*.jpg        one portrait per member; the filename becomes
+                       the member id                       (chapter 05)
+```
+
+Every slot is optional — import what you have and run it again as more
+photographs arrive. Slots you haven't supplied are left untouched, so a
+second run never wipes out the first.
+
+The script auto-orients from EXIF, crops to each slot's shape with
+face-aware framing, converts to WebP, and **drops EXIF metadata** so
+camera originals don't carry GPS coordinates or device names onto a
+public site. The originals stay out of git (see `.gitignore`); the
+optimised files in `public/images` are what get committed.
+
+JPEG, PNG, WebP, TIFF and AVIF are read directly. iPhone `.HEIC` files
+need converting first — on a Mac, opening them in Preview and exporting
+as JPEG is enough.
+
+### Adding to the memory cloud
+
+Set `MEMORY_COUNT` in `src/lib/content.ts` to the number of photographs
+and the layout places them for you — spread across the frame, each at its
+own depth so they surface one at a time. Nothing needs positioning by
+hand at any count.
+
+Captions and alt text come from `memoryDetails` in the same file, in file
+order. The list can be shorter than the photographs; anything past the
+end falls back to a generic label, so you can add pictures first and
+describe them later.
+
 ### Adding member portraits
 
 Cards render a monogram plate until a portrait exists, so the section is
 complete before every photo has been collected. To switch a card to
-photography, drop the file in `public/images/members/` and add one field:
+photography, put the file at `public/images/members/<id>.webp` (or run
+the import) and add one field to that roster entry in
+`src/lib/content.ts`:
 
 ```ts
-{ id: 'member-01', name: 'CAPTAIN', /* … */, photo: '/images/members/member-01.webp' }
+{
+  id: 'member-01',
+  name: '山田 花子',                              // or a role, as now
+  reading: 'やまだ はなこ',
+  monogram: '01',
+  role: 'CAPTAIN',
+  word: '誰よりも先に立って、誰よりも長く残っていた。',
+  photo: '/images/members/member-01.webp',
+}
 ```
 
-### Replacing the photography
-
-Assets live in `public/images/`. Swapping a file for a real photograph at
-the same path is all that is needed — nothing else refers to them.
-
-| File | Used by | Wants |
-|---|---|---|
-| `huddle-hero.webp` | 01, 02, 03, 05 | The huddle, wide (≈2.9:1) |
-| `huddle-final.webp` | 06 | The huddle, tighter crop |
-| `sky-sunset.webp` | 07 | Sunset, silhouettes low in frame |
-| `year-01/02/03.webp` | 03 | One photo per school year, landscape |
-| `memory-01…10.webp` | 04 | Polaroid contents, roughly 4:3 |
-
-> **On the current images.** They were cut from the design comp, which is
-> the only source that came with the brief, so they are low-resolution
-> derivatives — good enough to build and review against, not what should
-> ship. Several comp panels also have the comp's own typography baked into
-> the pixels; those regions were avoided, and the Memories sky is drawn in
-> CSS (`components/ui/Sky.tsx`) rather than sampled. Replacing them with
-> the team's real photographs needs no code changes.
+The roster is a plain list — add or remove entries freely; the grid
+reflows.
 
 ## Motion and accessibility
 

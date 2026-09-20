@@ -217,9 +217,11 @@ export default function Memories() {
                       className="object-cover"
                     />
                   </div>
-                  <figcaption className="en-label mt-[7%] text-center text-[0.42rem] text-navy/45">
-                    {item.caption}
-                  </figcaption>
+                  {item.caption && (
+                    <figcaption className="en-label mt-[7%] text-center text-[0.42rem] text-navy/45">
+                      {item.caption}
+                    </figcaption>
+                  )}
                 </div>
               </figure>
             ))}

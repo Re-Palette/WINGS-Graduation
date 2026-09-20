@@ -3,6 +3,10 @@
  * Editing this file is how you update the site — no component needs touching.
  */
 
+import { buildMemoryCloud, type MemoryDetail } from '@/lib/memoryCloud';
+
+export type { Memory } from '@/lib/memoryCloud';
+
 export const team = {
   school: 'HANEDA INTERNATIONAL HIGH SCHOOL',
   unit: 'CHEERLEADING TEAM',
@@ -102,29 +106,35 @@ export const years = {
    `depth` (0–1) places each polaroid in Z space; `x`/`y` are viewport
    percentages. Tuned so nothing collides at any breakpoint.
 ----------------------------------------------------------------- */
-export type Memory = {
-  src: string;
-  alt: string;
-  caption: string;
-  x: number;
-  y: number;
-  depth: number;
-  rotate: number;
-  scale: number;
-};
+/**
+ * How many photographs are in the memory cloud. Drop the files in as
+ * `memory-01.webp`, `memory-02.webp`, … (or run `npm run photos`) and set
+ * this to match — the layout places them for you.
+ */
+export const MEMORY_COUNT = 10;
 
-const memoryItems: Memory[] = [
-  { src: '/images/memory-01.webp', alt: '円陣を組む背中', caption: 'Huddle', x: 22, y: 26, depth: 0.10, rotate: -6, scale: 1.0 },
-  { src: '/images/memory-02.webp', alt: '集合写真', caption: 'Everyone', x: 74, y: 20, depth: 0.22, rotate: 5, scale: 0.92 },
-  { src: '/images/memory-03.webp', alt: '夕暮れの整列', caption: 'Sunset', x: 50, y: 62, depth: 0.34, rotate: -3, scale: 1.06 },
-  { src: '/images/memory-04.webp', alt: '大会前の集合', caption: 'Before the mat', x: 15, y: 68, depth: 0.46, rotate: 7, scale: 0.88 },
-  { src: '/images/memory-05.webp', alt: '重ねた手', caption: 'Our hands', x: 82, y: 58, depth: 0.55, rotate: -8, scale: 1.02 },
-  { src: '/images/memory-06.webp', alt: '青と金のポンポン', caption: 'Blue & Gold', x: 36, y: 14, depth: 0.64, rotate: 4, scale: 0.86 },
-  { src: '/images/memory-07.webp', alt: 'ユニフォーム姿', caption: 'Uniform', x: 64, y: 76, depth: 0.72, rotate: -5, scale: 0.9 },
-  { src: '/images/memory-08.webp', alt: '屋外でのスタンツ', caption: 'Practice', x: 28, y: 46, depth: 0.80, rotate: 6, scale: 0.84 },
-  { src: '/images/memory-09.webp', alt: 'ベンチで待つチーム', caption: 'Waiting', x: 86, y: 38, depth: 0.88, rotate: -4, scale: 0.8 },
-  { src: '/images/memory-10.webp', alt: '夜の競技会場', caption: 'The arena', x: 58, y: 32, depth: 0.95, rotate: 3, scale: 0.76 },
+/**
+ * Optional wording per photograph, in the same order as the files.
+ * Anything past the end of this list falls back to a generic label, so
+ * you can add photographs first and describe them later.
+ *
+ * `alt` is read aloud by screen readers; `caption` is printed on the
+ * polaroid.
+ */
+const memoryDetails: MemoryDetail[] = [
+  { alt: '円陣を組む背中', caption: 'Huddle' },
+  { alt: '集合写真', caption: 'Everyone' },
+  { alt: '夕暮れの整列', caption: 'Sunset' },
+  { alt: '大会前の集合', caption: 'Before the mat' },
+  { alt: '重ねた手', caption: 'Our hands' },
+  { alt: '青と金のポンポン', caption: 'Blue & Gold' },
+  { alt: 'ユニフォーム姿', caption: 'Uniform' },
+  { alt: '屋外でのスタンツ', caption: 'Practice' },
+  { alt: 'ベンチで待つチーム', caption: 'Waiting' },
+  { alt: '夜の競技会場', caption: 'The arena' },
 ];
+
+const memoryItems = buildMemoryCloud(MEMORY_COUNT, memoryDetails);
 
 export const memories = {
   index: '04',
