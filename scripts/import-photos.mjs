@@ -53,8 +53,11 @@ const SOURCE_EXTENSIONS = new Set(['.jpg', '.jpeg', '.png', '.webp', '.tif', '.t
  * layout and cropping here keeps the files small.
  */
 const SLOTS = {
-  'huddle-hero': { width: 2400, aspect: null, quality: 90 },
-  'huddle-final': { width: 2200, aspect: null, quality: 90 },
+  // The opening pushes in to 420%, so the huddle carries more pixels than
+  // anything else on the site — the close-up frames are real pixels, not
+  // an upscale. Next serves smaller variants from it automatically.
+  'huddle-hero': { width: 3600, aspect: null, quality: 90 },
+  'huddle-final': { width: 3000, aspect: null, quality: 90 },
   'sky-sunset': { width: 2000, aspect: null, quality: 90 },
   'year-01': { width: 1400, aspect: 16 / 10, quality: 88 },
   'year-02': { width: 1400, aspect: 16 / 10, quality: 88 },
