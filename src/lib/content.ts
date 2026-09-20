@@ -113,24 +113,26 @@ export type Memory = {
   scale: number;
 };
 
+const memoryItems: Memory[] = [
+  { src: '/images/memory-01.webp', alt: '円陣を組む背中', caption: 'Huddle', x: 22, y: 26, depth: 0.10, rotate: -6, scale: 1.0 },
+  { src: '/images/memory-02.webp', alt: '集合写真', caption: 'Everyone', x: 74, y: 20, depth: 0.22, rotate: 5, scale: 0.92 },
+  { src: '/images/memory-03.webp', alt: '夕暮れの整列', caption: 'Sunset', x: 50, y: 62, depth: 0.34, rotate: -3, scale: 1.06 },
+  { src: '/images/memory-04.webp', alt: '大会前の集合', caption: 'Before the mat', x: 15, y: 68, depth: 0.46, rotate: 7, scale: 0.88 },
+  { src: '/images/memory-05.webp', alt: '重ねた手', caption: 'Our hands', x: 82, y: 58, depth: 0.55, rotate: -8, scale: 1.02 },
+  { src: '/images/memory-06.webp', alt: '青と金のポンポン', caption: 'Blue & Gold', x: 36, y: 14, depth: 0.64, rotate: 4, scale: 0.86 },
+  { src: '/images/memory-07.webp', alt: 'ユニフォーム姿', caption: 'Uniform', x: 64, y: 76, depth: 0.72, rotate: -5, scale: 0.9 },
+  { src: '/images/memory-08.webp', alt: '屋外でのスタンツ', caption: 'Practice', x: 28, y: 46, depth: 0.80, rotate: 6, scale: 0.84 },
+  { src: '/images/memory-09.webp', alt: 'ベンチで待つチーム', caption: 'Waiting', x: 86, y: 38, depth: 0.88, rotate: -4, scale: 0.8 },
+  { src: '/images/memory-10.webp', alt: '夜の競技会場', caption: 'The arena', x: 58, y: 32, depth: 0.95, rotate: 3, scale: 0.76 },
+];
+
 export const memories = {
   index: '04',
   label: 'MEMORIES',
   title: ['たくさんの', '思い出たち。'],
   caption: ['笑って、泣いて、', 'みんなで過ごした時間は、', '一生の宝物。'],
   aside: 'Thank you for all the memories.',
-  items: [
-    { src: '/images/memory-01.webp', alt: '円陣を組む背中', caption: 'Huddle', x: 22, y: 26, depth: 0.10, rotate: -6, scale: 1.0 },
-    { src: '/images/memory-02.webp', alt: '集合写真', caption: 'Everyone', x: 74, y: 20, depth: 0.22, rotate: 5, scale: 0.92 },
-    { src: '/images/memory-03.webp', alt: '夕暮れの整列', caption: 'Sunset', x: 50, y: 62, depth: 0.34, rotate: -3, scale: 1.06 },
-    { src: '/images/memory-04.webp', alt: '大会前の集合', caption: 'Before the mat', x: 15, y: 68, depth: 0.46, rotate: 7, scale: 0.88 },
-    { src: '/images/memory-05.webp', alt: '重ねた手', caption: 'Our hands', x: 82, y: 58, depth: 0.55, rotate: -8, scale: 1.02 },
-    { src: '/images/memory-06.webp', alt: '青と金のポンポン', caption: 'Blue & Gold', x: 36, y: 14, depth: 0.64, rotate: 4, scale: 0.86 },
-    { src: '/images/memory-07.webp', alt: 'ユニフォーム姿', caption: 'Uniform', x: 64, y: 76, depth: 0.72, rotate: -5, scale: 0.9 },
-    { src: '/images/memory-08.webp', alt: '屋外でのスタンツ', caption: 'Practice', x: 28, y: 46, depth: 0.80, rotate: 6, scale: 0.84 },
-    { src: '/images/memory-09.webp', alt: 'ベンチで待つチーム', caption: 'Waiting', x: 86, y: 38, depth: 0.88, rotate: -4, scale: 0.8 },
-    { src: '/images/memory-10.webp', alt: '夜の競技会場', caption: 'The arena', x: 58, y: 32, depth: 0.95, rotate: 3, scale: 0.76 },
-  ] satisfies Memory[],
+  items: memoryItems,
 } as const;
 
 /* -----------------------------------------------------------------
@@ -149,20 +151,22 @@ export type Member = {
   photo?: string;
 };
 
+const roster: Member[] = [
+  { id: 'member-01', name: 'CAPTAIN', reading: 'キャプテン', monogram: '01', role: 'MEMBER 01', word: '誰よりも先に立って、誰よりも長く残っていた。' },
+  { id: 'member-02', name: 'VICE CAPTAIN', reading: '副キャプテン', monogram: '02', role: 'MEMBER 02', word: '隣にいるだけで、なぜか大丈夫だと思えた。' },
+  { id: 'member-03', name: 'BASE', reading: 'ベース', monogram: '03', role: 'MEMBER 03', word: '支える側の手は、いつも静かに震えていた。' },
+  { id: 'member-04', name: 'FLYER', reading: 'フライヤー', monogram: '04', role: 'MEMBER 04', word: '一番高いところで、一番遠くを見ていた。' },
+  { id: 'member-05', name: 'BACK SPOT', reading: 'バックスポット', monogram: '05', role: 'MEMBER 05', word: '誰も見ていない場所で、全部を見ていた。' },
+  { id: 'member-06', name: 'TUMBLER', reading: 'タンブラー', monogram: '06', role: 'MEMBER 06', word: '何度転んでも、また助走をはじめた。' },
+];
+
 export const member = {
   index: '05',
   label: 'MEMBER',
   title: ['WINGSを', 'つくった人たち。'],
   caption: ['ひとりでは、ここまで来られなかった。', '誰かがいたから、飛べた。'],
   aside: 'These were the people who built WINGS.',
-  roster: [
-    { id: 'member-01', name: 'CAPTAIN', reading: 'キャプテン', monogram: '01', role: 'Captain', word: '誰よりも先に立って、誰よりも長く残っていた。' },
-    { id: 'member-02', name: 'VICE CAPTAIN', reading: '副キャプテン', monogram: '02', role: 'Vice Captain', word: '隣にいるだけで、なぜか大丈夫だと思えた。' },
-    { id: 'member-03', name: 'BASE', reading: 'ベース', monogram: '03', role: 'Base', word: '支える側の手は、いつも静かに震えていた。' },
-    { id: 'member-04', name: 'FLYER', reading: 'フライヤー', monogram: '04', role: 'Flyer', word: '一番高いところで、一番遠くを見ていた。' },
-    { id: 'member-05', name: 'BACK SPOT', reading: 'バックスポット', monogram: '05', role: 'Back Spot', word: '誰も見ていない場所で、全部を見ていた。' },
-    { id: 'member-06', name: 'TUMBLER', reading: 'タンブラー', monogram: '06', role: 'Tumbler', word: '何度転んでも、また助走をはじめた。' },
-  ] satisfies Member[],
+  roster,
 } as const;
 
 /* -----------------------------------------------------------------
@@ -200,7 +204,6 @@ export const imagery = {
   huddleHero: '/images/huddle-hero.webp',
   huddleFinal: '/images/huddle-final.webp',
   skySunset: '/images/sky-sunset.webp',
-  skyClouds: '/images/sky-clouds.webp',
 } as const;
 
 export const huddleAlt =
