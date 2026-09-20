@@ -76,9 +76,9 @@ export default function OurStory() {
       // A very slow push-in keeps the held frame alive.
       gsap.fromTo(
         '[data-story-frame]',
-        { scale: 1.04 },
+        { scale: 1.02 },
         {
-          scale: 1.2,
+          scale: 1.12,
           ease: 'none',
           scrollTrigger: {
             trigger: root,
@@ -102,7 +102,14 @@ export default function OurStory() {
       aria-label="私たちの日々"
     >
       <div className="sticky top-0 flex min-h-svh w-full items-center justify-center overflow-hidden py-[12svh] motion-safe:h-svh motion-safe:min-h-0 motion-safe:py-0">
-        <div data-story-frame className="absolute inset-0 will-change-transform">
+        {/* Full-bleed on a wide screen. On a portrait one, cover-fitting a
+            2.4:1 frame shows about a fifth of its width — a patch of
+            fabric rather than a huddle — so the photograph becomes a
+            centred band instead, the same shape chapter 01 lands on. */}
+        <div
+          data-story-frame
+          className="absolute inset-x-0 top-1/2 h-[64svh] -translate-y-1/2 will-change-transform md:inset-0 md:h-auto md:translate-y-0"
+        >
           <Image
             src={imagery.huddleHero}
             alt={huddleAlt}
@@ -113,9 +120,19 @@ export default function OurStory() {
           />
         </div>
 
-        <div className="absolute inset-0 bg-navy-deep/45" aria-hidden="true" />
+        <div
+          className="pointer-events-none absolute inset-0 bg-navy mix-blend-color opacity-20"
+          aria-hidden="true"
+        />
+        <div className="absolute inset-0 bg-navy-deep/55" aria-hidden="true" />
         <div
           className="absolute inset-0 bg-gradient-to-r from-navy-deep/75 via-navy-deep/15 to-navy-deep/75"
+          aria-hidden="true"
+        />
+        {/* A band of shade only where the words are, so the photograph
+            stays bright either side of them. */}
+        <div
+          className="pointer-events-none absolute inset-x-0 top-1/2 h-[52svh] -translate-y-1/2 bg-gradient-to-b from-transparent via-navy-deep/70 to-transparent"
           aria-hidden="true"
         />
         <Grain />

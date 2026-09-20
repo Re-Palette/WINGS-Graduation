@@ -100,7 +100,14 @@ export default function FinalHuddle() {
       aria-label="最後の円陣"
     >
       <div className="sticky top-0 flex h-svh w-full items-center justify-center overflow-hidden">
-        <div data-finale-frame className="absolute inset-0 will-change-transform">
+        {/* Full-bleed on a wide screen. On a portrait one, cover-fitting a
+            2.4:1 frame shows about a fifth of its width — a patch of
+            fabric rather than a huddle — so the photograph becomes a
+            centred band instead, the same shape chapter 01 lands on. */}
+        <div
+          data-finale-frame
+          className="absolute inset-x-0 top-1/2 h-[64svh] -translate-y-1/2 will-change-transform md:inset-0 md:h-auto md:translate-y-0"
+        >
           <Image
             src={imagery.huddleFinal}
             alt={huddleAlt}
@@ -112,8 +119,16 @@ export default function FinalHuddle() {
         </div>
 
         <div
+          className="pointer-events-none absolute inset-0 bg-navy mix-blend-color opacity-20"
+          aria-hidden="true"
+        />
+        <div
           data-finale-veil
           className="absolute inset-0 bg-navy-deep"
+          aria-hidden="true"
+        />
+        <div
+          className="pointer-events-none absolute inset-x-0 top-1/2 h-[64svh] -translate-y-1/2 bg-gradient-to-b from-transparent via-navy-deep/55 to-transparent"
           aria-hidden="true"
         />
         <Grain />
@@ -127,10 +142,14 @@ export default function FinalHuddle() {
             <p
               key={line}
               data-finale-line
-              className={`jp-headline text-paper drop-shadow-[0_8px_44px_rgba(5,14,33,0.9)] ${
+              /* The colour lives in both branches, never in the shared
+                 part: two `text-*` colour utilities have equal weight, so
+                 the stylesheet's own order decides which wins, not the
+                 order they appear in here. */
+              className={`jp-headline drop-shadow-[0_8px_44px_rgba(5,14,33,0.9)] ${
                 i === finale.lines.length - 1
                   ? 'mt-6 text-[clamp(2.2rem,8vw,6rem)] text-gold-soft sm:mt-10'
-                  : 'text-[clamp(1.5rem,5vw,3.8rem)]'
+                  : 'text-[clamp(1.5rem,5vw,3.8rem)] text-paper'
               }`}
             >
               {line}

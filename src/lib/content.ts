@@ -212,6 +212,13 @@ export const ending = {
 
 export const imagery = {
   huddleHero: '/images/huddle-hero.webp',
+  /**
+   * Chapter 01's band is cut to the photograph's own shape, so the whole
+   * frame is visible when the camera finishes pulling back. Update this
+   * whenever huddle-hero.webp is replaced with a differently-shaped crop
+   * — `npm run photos` prints the dimensions of what it wrote.
+   */
+  huddleHeroAspect: '2000 / 832',
   huddleFinal: '/images/huddle-final.webp',
   skySunset: '/images/sky-sunset.webp',
 } as const;

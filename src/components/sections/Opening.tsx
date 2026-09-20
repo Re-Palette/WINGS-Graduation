@@ -32,7 +32,7 @@ export default function Opening() {
       if (reduced) {
         // No camera move: present the photograph and the words, at rest.
         gsap.set(frame, { scale: 1, filter: 'blur(0px)' });
-        gsap.set(veil, { opacity: 0.2 });
+        gsap.set(veil, { opacity: 0.32 });
         gsap.set(overture, { opacity: 0 });
         gsap.set(declaration, { opacity: 1, y: 0 });
         setIntroDone(true);
@@ -89,7 +89,7 @@ export default function Opening() {
           },
           0
         )
-        .to(veil, { opacity: 0.2, ease: 'none', duration: 0.72 }, 0)
+        .to(veil, { opacity: 0.32, ease: 'none', duration: 0.72 }, 0)
         // The overture steps aside early, while the photo is still close.
         .to(
           overture,
@@ -138,7 +138,14 @@ export default function Opening() {
           className="absolute left-1/2 top-1/2 w-screen -translate-x-1/2 -translate-y-1/2 will-change-transform"
           style={{ transformOrigin: '50% 50%' }}
         >
-          <div className="relative h-[58svh] w-full md:aspect-[2400/822] md:h-auto">
+          {/* Below md the band keeps a fixed height instead of the
+              photograph's shape — a 2.4:1 strip on a portrait screen is
+              too thin to read as a huddle. Height wins over aspect-ratio
+              while it is set, so one element serves both. */}
+          <div
+            className="relative h-[58svh] w-full md:h-auto"
+            style={{ aspectRatio: imagery.huddleHeroAspect }}
+          >
             <Image
               src={imagery.huddleHero}
               alt={huddleAlt}
@@ -151,13 +158,35 @@ export default function Opening() {
           </div>
         </div>
 
+        {/* Pulls the venue's own colour into the navy palette — a real
+            gymnasium arrives with a bright cyan curtain behind it.
+            Deliberately light: past about 25% it starts flattening the
+            royal blue of the uniforms and the gold of the ribbons, which
+            are the team's colours and the reason the photograph works.
+            A blend layer rather than a CSS filter on the photograph
+            itself: the frame is scaled every frame and filters are not
+            free. */}
+        <div
+          className="pointer-events-none absolute inset-0 bg-navy mix-blend-color opacity-20"
+          aria-hidden="true"
+        />
         <div
           data-opening-veil
           className="absolute inset-0 bg-navy-deep"
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-b from-navy-deep/45 via-transparent to-navy-deep/65"
+          className="absolute inset-0 bg-gradient-to-b from-navy-deep/50 via-transparent to-navy-deep/70"
+          aria-hidden="true"
+        />
+        {/* Scrims so the chapter rail and the declaration always have
+            something to sit on, whatever the photograph is doing. */}
+        <div
+          className="absolute inset-y-0 left-0 w-[34vw] bg-gradient-to-r from-navy-deep/85 to-transparent"
+          aria-hidden="true"
+        />
+        <div
+          className="absolute inset-y-0 right-0 w-[40vw] bg-gradient-to-l from-navy-deep/75 to-transparent md:w-[34vw]"
           aria-hidden="true"
         />
         <Grain />

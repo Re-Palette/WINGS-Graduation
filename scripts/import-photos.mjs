@@ -56,13 +56,33 @@ const SLOTS = {
   // The opening pushes in to 420%, so the huddle carries more pixels than
   // anything else on the site — the close-up frames are real pixels, not
   // an upscale. Next serves smaller variants from it automatically.
-  'huddle-hero': { width: 3600, aspect: null, quality: 90 },
-  'huddle-final': { width: 3000, aspect: null, quality: 90 },
+  'huddle-hero': { width: 3600, aspect: null, quality: 90, grade: true },
+  'huddle-final': { width: 3000, aspect: null, quality: 90, grade: true },
   'sky-sunset': { width: 2000, aspect: null, quality: 90 },
   'year-01': { width: 1400, aspect: 16 / 10, quality: 88 },
   'year-02': { width: 1400, aspect: 16 / 10, quality: 88 },
   'year-03': { width: 1400, aspect: 16 / 10, quality: 88 },
 };
+
+/**
+ * The house grade, applied only to the two huddle frames.
+ *
+ * Those are the images that run full-bleed behind white type through the
+ * dark chapters, and a gymnasium shot arrives with whatever the venue's
+ * lighting and backdrop happened to be — often a bright cyan curtain that
+ * fights the navy palette. Pulling the saturation back and deepening the
+ * shadows settles any venue into the same room.
+ *
+ * Everything else keeps its own colour: the sunset needs its warmth, and
+ * the memory polaroids read as snapshots precisely because they don't
+ * match.
+ */
+function grade(pipeline) {
+  return pipeline
+    .modulate({ saturation: 0.82, brightness: 0.97 })
+    // Deepens the shadows without crushing the white uniforms.
+    .linear(1.06, -8);
+}
 
 const MEMORY = { width: 1200, aspect: 4 / 3, quality: 86 };
 const MEMBER = { width: 1200, aspect: 3 / 4, quality: 88 };
@@ -94,7 +114,7 @@ function findBySlotName(dir, name) {
   return null;
 }
 
-async function convert(from, toRelative, { width, aspect, quality }) {
+async function convert(from, toRelative, { width, aspect, quality, grade: shouldGrade }) {
   const to = path.join(OUT, toRelative);
   const original = sharp(from);
   const meta = await original.metadata();
@@ -116,6 +136,8 @@ async function convert(from, toRelative, { width, aspect, quality }) {
   } else {
     pipeline = pipeline.resize({ width: Math.round(width), withoutEnlargement: false });
   }
+
+  if (shouldGrade) pipeline = grade(pipeline);
 
   const label = `${meta.width}×${meta.height} → ${toRelative}`;
 
