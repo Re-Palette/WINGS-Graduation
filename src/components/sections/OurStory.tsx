@@ -98,10 +98,10 @@ export default function OurStory() {
     <section
       ref={rootRef}
       id="story"
-      className="relative h-[620svh] bg-navy-deep"
+      className="relative h-auto bg-navy-deep motion-safe:h-[620svh]"
       aria-label="私たちの日々"
     >
-      <div className="sticky top-0 flex h-svh w-full items-center justify-center overflow-hidden">
+      <div className="sticky top-0 flex min-h-svh w-full items-center justify-center overflow-hidden py-[12svh] motion-safe:h-svh motion-safe:min-h-0 motion-safe:py-0">
         <div data-story-frame className="absolute inset-0 will-change-transform">
           <Image
             src={imagery.huddleHero}
@@ -127,7 +127,7 @@ export default function OurStory() {
         {/* The words */}
         <div
           data-story-stack
-          className="relative z-20 flex h-[46svh] w-full items-center justify-center px-6 sm:h-[40svh]"
+          className="relative z-20 flex w-full items-center justify-center px-6 motion-safe:h-[46svh] sm:motion-safe:h-[40svh]"
         >
           <div className="relative flex w-full max-w-[64rem] flex-col items-center gap-6 sm:gap-8">
             {story.lines.map((line) => (

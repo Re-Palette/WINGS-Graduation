@@ -37,6 +37,7 @@ export default function Memories() {
           rotateY: 0,
           rotateZ: (i, el) => Number(el.dataset.rotate ?? 0),
         });
+        gsap.set('[data-memory-dusk]', { opacity: 0 });
         return;
       }
 
@@ -83,10 +84,25 @@ export default function Memories() {
           // Each one passes the viewer and dissolves, never piling up.
           .to(
             card,
-            { opacity: 0, filter: 'blur(10px)', ease: 'power1.in', duration: 0.16 },
-            0.72 + depth * 0.2
+            { opacity: 0, filter: 'blur(10px)', ease: 'power1.in', duration: 0.14 },
+            0.66 + depth * 0.16
           );
       });
+
+      gsap.fromTo(
+        '[data-memory-dusk]',
+        { opacity: 0 },
+        {
+          opacity: 1,
+          ease: 'power2.in',
+          scrollTrigger: {
+            trigger: root,
+            start: '74% bottom',
+            end: 'bottom bottom',
+            scrub: 1.2,
+          },
+        }
+      );
 
       // The heading recedes as the photographs come forward.
       gsap.to('[data-memory-heading]', {
@@ -110,26 +126,26 @@ export default function Memories() {
     <section
       ref={rootRef}
       id="memories"
-      className="relative h-[380svh] bg-navy-deep"
+      className="relative h-auto bg-navy-deep motion-safe:h-[340svh]"
       aria-label="思い出"
     >
-      <div className="sticky top-0 h-svh w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden motion-safe:sticky motion-safe:top-0 motion-safe:h-svh">
         {/* Sky */}
-        <Sky />
+        <Sky className="motion-reduce:fixed" />
         <div
           className="absolute inset-0 bg-gradient-to-b from-navy-deep via-transparent to-navy-deep/90"
           aria-hidden="true"
         />
         <Particles count={60} color="255,255,255" />
 
-        <div className="absolute left-6 top-1/2 z-30 -translate-y-1/2 sm:left-10">
+        <div className="absolute left-6 top-[14svh] z-30 sm:left-10 motion-safe:top-1/2 motion-safe:-translate-y-1/2">
           <SectionIndex index={memories.index} label={memories.label} tone="dark" />
         </div>
 
         {/* Heading */}
         <div
           data-memory-heading
-          className="absolute left-6 top-[18svh] z-30 max-w-xs sm:left-10 lg:left-[9vw] lg:top-[26svh]"
+          className="absolute left-6 top-[22svh] z-30 max-w-xs sm:left-10 lg:left-[9vw] lg:top-[26svh] motion-safe:top-[18svh]"
         >
           <h2 className="jp-headline text-[clamp(1.6rem,4vw,3rem)] text-navy drop-shadow-[0_2px_18px_rgba(253,253,251,0.85)]">
             {memories.title.map((line) => (
@@ -147,14 +163,26 @@ export default function Memories() {
           </div>
         </div>
 
-        {/* The cloud */}
+        {/* The cloud — a depth field with motion, a gallery without it */}
         <div
-          className="absolute inset-0 z-20"
-          style={{ perspective: '1100px', perspectiveOrigin: '55% 50%' }}
+          className={
+            reduced
+              ? 'relative z-20 mx-auto w-full max-w-5xl px-6 pb-[14svh] pt-[36svh]'
+              : 'absolute inset-0 z-20'
+          }
+          style={
+            reduced
+              ? undefined
+              : { perspective: '1100px', perspectiveOrigin: '55% 50%' }
+          }
         >
           <div
-            className="relative h-full w-full"
-            style={{ transformStyle: 'preserve-3d' }}
+            className={
+              reduced
+                ? 'grid grid-cols-2 gap-6 sm:grid-cols-3 sm:gap-8'
+                : 'relative h-full w-full'
+            }
+            style={reduced ? undefined : { transformStyle: 'preserve-3d' }}
           >
             {memories.items.map((item) => (
               <figure
@@ -162,13 +190,21 @@ export default function Memories() {
                 data-memory
                 data-depth={item.depth}
                 data-rotate={item.rotate}
-                className="absolute w-[36vw] max-w-[17rem] min-w-[8.5rem] will-change-transform sm:w-[24vw] lg:w-[17vw]"
-                style={{
-                  left: `${item.x}%`,
-                  top: `${item.y}%`,
-                  transform: `translate(-50%, -50%) scale(${item.scale})`,
-                  transformStyle: 'preserve-3d',
-                }}
+                className={
+                  reduced
+                    ? 'w-full'
+                    : 'absolute w-[36vw] max-w-[17rem] min-w-[8.5rem] will-change-transform sm:w-[24vw] lg:w-[17vw]'
+                }
+                style={
+                  reduced
+                    ? undefined
+                    : {
+                        left: `${item.x}%`,
+                        top: `${item.y}%`,
+                        transform: `translate(-50%, -50%) scale(${item.scale})`,
+                        transformStyle: 'preserve-3d',
+                      }
+                }
               >
                 {/* Polaroid */}
                 <div className="bg-paper p-[5%] pb-[14%] shadow-[0_28px_70px_-24px_rgba(5,14,33,0.85)]">
@@ -195,6 +231,13 @@ export default function Memories() {
           <br />
           for all the memories.
         </p>
+
+        {/* Dusk — hands the chapter over to the navy of MEMBER */}
+        <div
+          data-memory-dusk
+          className="pointer-events-none absolute inset-0 z-40 bg-navy-deep opacity-0"
+          aria-hidden="true"
+        />
       </div>
     </section>
   );

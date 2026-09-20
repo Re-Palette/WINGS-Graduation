@@ -8,24 +8,8 @@ import { huddleAlt, imagery, opening, story } from '@/lib/content';
 import SectionIndex from '@/components/ui/SectionIndex';
 import Grain from '@/components/ui/Grain';
 
-/** Native aspect ratio of huddle-hero.webp (2400 × 822). */
-const HUDDLE_ASPECT = 2400 / 822;
-
-/**
- * The scale the huddle needs so the whole frame fits the viewport width.
- * Scale 1 is "object-cover"; anything below that pulls back into letterbox.
- */
-function resolveRestScale() {
-  if (typeof window === 'undefined') return 1;
-
-  const { innerWidth: vw, innerHeight: vh } = window;
-  const coverWidth = vh * HUDDLE_ASPECT;
-  const fit = vw / coverWidth;
-
-  // Phones can't show the full frame without it becoming a postage stamp,
-  // so they settle on a closer — still much wider — crop.
-  return vw < 768 ? Math.max(fit, 0.62) : Math.min(1, fit);
-}
+/** How deep inside the huddle the opening frame starts. */
+const START_SCALE = 4.2;
 
 export default function Opening() {
   const rootRef = useRef<HTMLElement>(null);
@@ -47,7 +31,7 @@ export default function Opening() {
 
       if (reduced) {
         // No camera move: present the photograph and the words, at rest.
-        gsap.set(frame, { scale: resolveRestScale(), filter: 'blur(0px)' });
+        gsap.set(frame, { scale: 1, filter: 'blur(0px)' });
         gsap.set(veil, { opacity: 0.2 });
         gsap.set(overture, { opacity: 0 });
         gsap.set(declaration, { opacity: 1, y: 0 });
@@ -56,7 +40,7 @@ export default function Opening() {
       }
 
       // ---- Act one: the dark room. Time-based, before any scrolling. ----
-      gsap.set(frame, { scale: 4.2, filter: 'blur(14px)', opacity: 0 });
+      gsap.set(frame, { scale: START_SCALE, filter: 'blur(14px)', opacity: 0 });
       gsap.set(veil, { opacity: 0.9 });
       gsap.set(declaration, { opacity: 0, y: 26 });
 
@@ -98,7 +82,7 @@ export default function Opening() {
         .to(
           frame,
           {
-            scale: () => resolveRestScale(),
+            scale: 1,
             filter: 'blur(0px)',
             ease: 'power1.out',
             duration: 0.72,
@@ -141,25 +125,30 @@ export default function Opening() {
     <section
       ref={rootRef}
       id="top"
-      className="relative h-[480svh] bg-navy-deep"
+      className="relative h-svh bg-navy-deep motion-safe:h-[480svh]"
       aria-label="オープニング"
     >
       <div className="sticky top-0 h-svh w-full overflow-hidden">
-        {/* The photograph */}
+        {/* The photograph, framed as the band it settles into, so the
+            camera only ever travels between "inside the huddle" and
+            "the whole huddle". Phones get a taller crop — a 2.92:1 strip
+            on a portrait screen is too thin to read as a huddle. */}
         <div
           data-opening-frame
-          className="absolute inset-0 will-change-transform"
+          className="absolute left-1/2 top-1/2 w-screen -translate-x-1/2 -translate-y-1/2 will-change-transform"
           style={{ transformOrigin: '50% 50%' }}
         >
-          <Image
-            src={imagery.huddleHero}
-            alt={huddleAlt}
-            fill
-            priority
-            sizes="100vw"
-            className="object-cover"
-            style={{ objectPosition: '50% 45%' }}
-          />
+          <div className="relative h-[58svh] w-full md:aspect-[2400/822] md:h-auto">
+            <Image
+              src={imagery.huddleHero}
+              alt={huddleAlt}
+              fill
+              priority
+              sizes="100vw"
+              className="object-cover"
+              style={{ objectPosition: '50% 45%' }}
+            />
+          </div>
         </div>
 
         <div
@@ -168,7 +157,7 @@ export default function Opening() {
           aria-hidden="true"
         />
         <div
-          className="absolute inset-0 bg-gradient-to-b from-navy-deep/55 via-transparent to-navy-deep/75"
+          className="absolute inset-0 bg-gradient-to-b from-navy-deep/45 via-transparent to-navy-deep/65"
           aria-hidden="true"
         />
         <Grain />

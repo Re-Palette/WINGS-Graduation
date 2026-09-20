@@ -95,7 +95,7 @@ export default function Ending() {
   return (
     <section
       ref={rootRef}
-      className="relative h-[240svh] bg-[#eaf1fb]"
+      className="relative h-svh bg-[#eaf1fb] motion-safe:h-[240svh]"
       aria-label="エンディング"
     >
       <div className="sticky top-0 h-svh w-full overflow-hidden">

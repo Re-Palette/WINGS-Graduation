@@ -96,7 +96,7 @@ export default function FinalHuddle() {
   return (
     <section
       ref={rootRef}
-      className="relative h-[520svh] bg-navy-deep"
+      className="relative h-svh bg-navy-deep motion-safe:h-[520svh]"
       aria-label="最後の円陣"
     >
       <div className="sticky top-0 flex h-svh w-full items-center justify-center overflow-hidden">

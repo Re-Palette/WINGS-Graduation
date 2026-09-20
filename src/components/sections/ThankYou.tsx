@@ -83,7 +83,7 @@ export default function ThankYou() {
     <section
       ref={rootRef}
       id="message"
-      className="relative h-[220svh] bg-navy-deep"
+      className="relative h-svh bg-navy-deep motion-safe:h-[220svh]"
       aria-label="ありがとう"
     >
       <div className="sticky top-0 flex h-svh w-full items-center overflow-hidden">
